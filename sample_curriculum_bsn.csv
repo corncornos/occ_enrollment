@@ -1,0 +1,51 @@
+Course Code,Course Name,Units,Year Level,Semester,Is Required,Prerequisites
+GE-100,Understanding the Self,3,1st Year,First Semester,Yes,
+GE-101,Reading in Philippine History,3,1st Year,First Semester,Yes,
+GE-107,The Contemporary World,3,1st Year,First Semester,Yes,
+NSTP1,National Service Training Program 1,3,1st Year,First Semester,Yes,
+PE1,Physical Fitness/Self-Testing Activities,2,1st Year,First Semester,Yes,
+BSN-101,Anatomy and Physiology,4,1st Year,First Semester,Yes,
+BSN-102,Fundamentals of Nursing,4,1st Year,First Semester,Yes,
+GE-104,Mathematics in the Modern World,3,1st Year,Second Semester,Yes,
+GE-103,Purposive Communication,3,1st Year,Second Semester,Yes,
+GE-102,Art Appreciation,3,1st Year,Second Semester,Yes,
+NSTP2,National Service Training Program 2,3,1st Year,Second Semester,Yes,
+PE2,Rhythmic Activities,2,1st Year,Second Semester,Yes,
+BSN-103,Health Assessment,3,1st Year,Second Semester,Yes,BSN-101
+BSN-104,Microbiology and Parasitology,3,1st Year,Second Semester,Yes,BSN-101
+BSN-105,Community Health Nursing 1,3,1st Year,Second Semester,Yes,BSN-102
+GE-105,Science Technology and Society,3,2nd Year,First Semester,Yes,
+GE-111,Ethics,3,2nd Year,First Semester,Yes,
+GE-106,Rizal's Life and Works,3,2nd Year,First Semester,Yes,
+PE3,Individual/Dual Combative Sports,2,2nd Year,First Semester,Yes,
+BSN-201,Pharmacology,4,2nd Year,First Semester,Yes,BSN-101
+BSN-202,Pathophysiology,3,2nd Year,First Semester,Yes,BSN-101
+BSN-203,Medical-Surgical Nursing 1,5,2nd Year,First Semester,Yes,BSN-102,BSN-103
+BSN-204,Nutrition and Diet Therapy,3,2nd Year,First Semester,Yes,
+BSN-205,Biochemistry,3,2nd Year,First Semester,Yes,BSN-101
+BSN-206,Medical-Surgical Nursing 2,5,2nd Year,Second Semester,Yes,BSN-203
+BSN-207,Maternal and Child Health Nursing 1,4,2nd Year,Second Semester,Yes,BSN-203
+BSN-208,Community Health Nursing 2,3,2nd Year,Second Semester,Yes,BSN-105
+BSN-209,Health Education,3,2nd Year,Second Semester,Yes,
+BSN-210,Research in Nursing,3,2nd Year,Second Semester,Yes,
+PE4,Team Sports,2,2nd Year,Second Semester,Yes,
+BSN-301,Medical-Surgical Nursing 3,5,3rd Year,First Semester,Yes,BSN-206
+BSN-302,Maternal and Child Health Nursing 2,4,3rd Year,First Semester,Yes,BSN-207
+BSN-303,Pediatric Nursing,4,3rd Year,First Semester,Yes,BSN-207
+BSN-304,Mental Health and Psychiatric Nursing,4,3rd Year,First Semester,Yes,BSN-203
+BSN-305,Nursing Informatics,2,3rd Year,First Semester,Yes,
+BSN-306,Medical-Surgical Nursing 4,5,3rd Year,Second Semester,Yes,BSN-301
+BSN-307,Obstetric Nursing,4,3rd Year,Second Semester,Yes,BSN-302
+BSN-308,Community Health Nursing 3,4,3rd Year,Second Semester,Yes,BSN-208
+BSN-309,Leadership and Management in Nursing,3,3rd Year,Second Semester,Yes,BSN-301
+BSN-310,Nursing Research 2,3,3rd Year,Second Semester,Yes,BSN-210
+BSN-401,Intensive Nursing Practicum,6,4th Year,First Semester,Yes,BSN-306,BSN-307,BSN-308
+BSN-402,Community Health Nursing 4,4,4th Year,First Semester,Yes,BSN-308
+BSN-403,Nursing Care of the Older Adult,3,4th Year,First Semester,Yes,BSN-306
+BSN-404,Disaster Nursing,2,4th Year,First Semester,Yes,
+BSN-405,Professional Nursing Practice,3,4th Year,First Semester,Yes,BSN-309
+BSN-406,Clinical Practicum 1,6,4th Year,Second Semester,Yes,BSN-401
+BSN-407,Clinical Practicum 2,6,4th Year,Second Semester,Yes,BSN-401
+BSN-408,Nursing Jurisprudence and Ethics,3,4th Year,Second Semester,Yes,BSN-405
+BSN-409,Comprehensive Nursing Review,3,4th Year,Second Semester,Yes,BSN-401
+

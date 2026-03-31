@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCC Enrollment System - Data Flow Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .section h3 {
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .diagram-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: auto;
+            position: relative;
+        }
+        
+        .diagram-container.level0 {
+            min-height: 400px;
+            padding: 15px;
+        }
+        
+        .mermaid {
+            text-align: center;
+            min-height: 300px;
+        }
+        
+        .mermaid.level0 {
+            min-height: 500px;
+            transform-origin: top left;
+            transition: transform 0.3s ease;
+        }
+        
+        .mermaid.level0 svg {
+            min-width: 700px;
+            min-height: 500px;
+        }
+        
+        .mermaid.compact svg {
+            font-size: 10px !important;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .view-toggle button {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .view-toggle button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .view-toggle button:hover {
+            background: #5568d3;
+            color: white;
+        }
+        
+        .diagram-page {
+            display: none;
+        }
+        
+        .diagram-page.active {
+            display: block;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        .mermaid .cluster rect {
+            fill: transparent !important;
+            stroke-width: 2px !important;
+        }
+        
+        .mermaid .cluster-label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .zoom-controls button {
+            display: block;
+            width: 40px;
+            height: 40px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .zoom-controls button:hover {
+            background: #5568d3;
+        }
+        
+        .zoom-info {
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .download-controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .download-controls button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: #27ae60;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .download-controls button:hover {
+            background: #229954;
+        }
+        
+        .download-controls button.secondary {
+            background: #3498db;
+        }
+        
+        .download-controls button.secondary:hover {
+            background: #2980b9;
+        }
+        
+        .download-all-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .download-all-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        
+        .description {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .description ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .description li {
+            margin: 8px 0;
+        }
+        
+        .nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .nav-menu h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+        
+        .nav-menu a {
+            display: block;
+            padding: 8px 12px;
+            margin: 5px 0;
+            text-decoration: none;
+            color: #667eea;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .process-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .process-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .process-card strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        @media print {
+            .nav-menu {
+                display: none;
+            }
+            
+            body {
+                background: white;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-menu">
+        <h4>Quick Navigation</h4>
+        <a href="#context">Context Diagram</a>
+        <a href="#level0">Level 0 DFD</a>
+        <a href="#level1">Level 1 DFDs</a>
+    </div>
+    
+    <button class="download-all-btn" onclick="downloadAllDiagrams()" title="Download All Diagrams">
+        📥 Download All Diagrams
+    </button>
+    
+    <div style="position: fixed; bottom: 100px; right: 30px; background: white; padding: 10px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; font-size: 12px;">
+        <strong>Download Tips:</strong><br>
+        • SVG downloads work immediately<br>
+        • PNG may take a moment to process<br>
+        • Check browser console for errors
+    </div>
+    
+    <div class="container">
+        <h1>OCC Enrollment System</h1>
+        <p class="subtitle">Comprehensive Data Flow Diagrams (DFD) - Current Implementation</p>
+        
+        <div class="description" style="background: #e8f5e9; border-left-color: #27ae60; margin-bottom: 30px;">
+            <p><strong>📋 Implementation Notes:</strong></p>
+            <ul>
+                <li><strong>Enhanced Enrollment Workflow:</strong> System automatically classifies students as regular/irregular and routes through appropriate approval chain</li>
+                <li><strong>Enrollment Approval Flow:</strong> Regular: Student → Registrar → Admin → Confirmed. Irregular: Student → Program Head → Registrar → Admin → Confirmed</li>
+                <li><strong>COR Generation:</strong> Registrar generates COR after enrollment approval, before final admin confirmation</li>
+                <li><strong>Adjustment Period Management:</strong> New process (9.0) for post-enrollment adjustments with workflow: Student → Program Head → Dean → Registrar Staff → Approved</li>
+                <li><strong>All 9 Major Processes:</strong> Fully implemented including adjustment period management</li>
+                <li><strong>All 21 Data Stores:</strong> Complete implementation including adjustment period control and changes tracking</li>
+                <li><strong>Registrar Staff Role:</strong> Handles enrollment assistance, COR generation, and adjustment period final approval</li>
+                <li><strong>Dean Role:</strong> Reviews curriculum submissions and adjustment period requests</li>
+            </ul>
+        </div>
+        
+        <!-- Context Diagram -->
+        <div class="section" id="context">
+            <h2>Context Diagram (Level 0)</h2>
+            <div class="description">
+                <p><strong>Overview:</strong> The Context Diagram represents the highest level view of the OCC Enrollment System, showing the system as a single process and its interactions with external entities.</p>
+                <p><strong>External Entities:</strong></p>
+                <ul>
+                    <li><strong>Student</strong> - Primary user who registers, applies for enrollment, uploads documents, views schedules and grades</li>
+                    <li><strong>Admin/Registrar</strong> - System administrator who manages users, curriculum, sections, schedules, approves enrollments, generates CORs, and manages grades</li>
+                    <li><strong>Admission Officer</strong> - Handles applicant processing, document verification, student number assignment, and enrollment control</li>
+                    <li><strong>Program Head</strong> - Submits curriculum proposals, reviews irregular student enrollments, and reviews adjustment period requests for their respective programs</li>
+                    <li><strong>Dean</strong> - Reviews and approves curriculum submissions, reviews adjustment period requests, and views enrollment reports</li>
+                    <li><strong>Registrar Staff</strong> - Handles enrollment assistance, generates CORs, and approves adjustment period requests</li>
+                </ul>
+            </div>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('context-diagram', 'Context_Diagram')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('context-diagram', 'Context_Diagram')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="context-diagram">
+graph TB
+    Student[Student]
+    Admin[Admin/Registrar]
+    Admission[Admission Officer]
+    ProgramHead[Program Head]
+    Dean[Dean]
+    RegistrarStaff[Registrar Staff]
+    System[OCC Enrollment System]
+    
+    Student -->|Student Registration Data| System
+    Student -->|Application Data| System
+    Student -->|Document Uploads| System
+    Student -->|Enrollment Request| System
+    Student -->|Adjustment Request| System
+    Student -->|Login Credentials| System
+    Student -->|Query| System
+    
+    System -->|Account Status| Student
+    System -->|Student Schedule| Student
+    System -->|Student Grades| Student
+    System -->|Student COR| Student
+    System -->|Enrollment Status| Student
+    System -->|Adjustment Status| Student
+    System -->|Chatbot Response| Student
+    
+    Admin -->|User Management Commands| System
+    Admin -->|Curriculum Management| System
+    Admin -->|Section Management| System
+    Admin -->|Schedule Management| System
+    Admin -->|Enrollment Approval| System
+    Admin -->|Grade Entry| System
+    Admin -->|COR Generation Request| System
+    
+    System -->|User List| Admin
+    System -->|Enrollment Reports| Admin
+    System -->|Curriculum Data| Admin
+    System -->|Section Information| Admin
+    System -->|Grade Reports| Admin
+    
+    Admission -->|Document Verification| System
+    Admission -->|Student Number Assignment| System
+    Admission -->|Enrollment Control| System
+    Admission -->|Applicant Processing| System
+    
+    System -->|Applicant List| Admission
+    System -->|Document Status| Admission
+    System -->|Enrollment Control Status| Admission
+    
+    ProgramHead -->|Curriculum Submission| System
+    ProgramHead -->|Irregular Student Review| System
+    ProgramHead -->|Adjustment Approval| System
+    ProgramHead -->|Login Credentials| System
+    
+    System -->|Curriculum Submission Status| ProgramHead
+    System -->|Program Data| ProgramHead
+    System -->|Enrollment Status| ProgramHead
+    System -->|Adjustment Requests| ProgramHead
+    
+    Dean -->|Curriculum Approval| System
+    Dean -->|Adjustment Approval| System
+    Dean -->|Login Credentials| System
+    
+    System -->|Curriculum Submissions| Dean
+    System -->|Enrollment Reports| Dean
+    System -->|Adjustment Requests| Dean
+    
+    RegistrarStaff -->|Enrollment Assistance| System
+    RegistrarStaff -->|COR Generation Request| System
+    RegistrarStaff -->|Adjustment Approval| System
+    RegistrarStaff -->|Login Credentials| System
+    
+    System -->|Enrollment Data| RegistrarStaff
+    System -->|Adjustment Requests| RegistrarStaff
+    
+    style System fill:#e1f5ff,stroke:#01579b,stroke-width:3px
+    style Student fill:#fff3e0,stroke:#e65100
+    style Admin fill:#f3e5f5,stroke:#4a148c
+    style Admission fill:#e8f5e9,stroke:#1b5e20
+    style ProgramHead fill:#fff9c4,stroke:#f57f17
+    style Dean fill:#fce4ec,stroke:#880e4f
+    style RegistrarStaff fill:#e0f2f1,stroke:#004d40
+                </div>
+            </div>
+        </div>
+        
+        <!-- Level 0 DFD -->
+        <div class="section" id="level0">
+            <h2>Level 0 DFD</h2>
+            <div class="description">
+                <p><strong>Overview:</strong> The Level 0 DFD decomposes the OCC Enrollment System into major processes, showing how data flows between processes, external entities, and data stores.</p>
+                <p><strong>Enhanced Features:</strong></p>
+                <ul>
+                    <li><strong>Enrollment Processing (4.0)</strong> includes automatic student classification (regular/irregular) and multi-stage approval workflow: Regular (Student → Registrar → Admin), Irregular (Student → Program Head → Registrar → Admin)</li>
+                    <li><strong>COR Generation</strong> happens at Registrar stage before final admin approval</li>
+                    <li><strong>Adjustment Period Management (9.0)</strong> - New process for post-enrollment adjustments with workflow: Student → Program Head → Dean → Registrar Staff</li>
+                    <li><strong>Program Head</strong> participates in enrollment review for irregular students and adjustment period approvals</li>
+                    <li><strong>Registrar Staff</strong> handles enrollment assistance, COR generation, and final adjustment period approval</li>
+                    <li><strong>Dean</strong> reviews curriculum submissions and adjustment period requests</li>
+                </ul>
+                <p><strong>Major Processes:</strong></p>
+                <div class="process-list">
+                    <div class="process-card"><strong>1.0 User Management</strong> - Handles user registration, authentication, and account management</div>
+                    <div class="process-card"><strong>2.0 Application Processing</strong> - Manages student applications, document verification, and applicant workflow</div>
+                    <div class="process-card"><strong>3.0 Curriculum Management</strong> - Handles curriculum submissions, reviews, and approvals</div>
+                    <div class="process-card"><strong>4.0 Enrollment Processing</strong> - Manages enrollment requests with regular/irregular workflows, section assignments, schedule creation, and COR generation</div>
+                    <div class="process-card"><strong>5.0 Grade Management</strong> - Handles grade entry, verification, and viewing</div>
+                    <div class="process-card"><strong>6.0 Document Management</strong> - Manages document uploads, verification, and status updates</div>
+                    <div class="process-card"><strong>7.0 Reporting</strong> - Generates enrollment reports and analytics</div>
+                    <div class="process-card"><strong>8.0 Chatbot Service</strong> - Processes queries and provides FAQ responses</div>
+                    <div class="process-card"><strong>9.0 Adjustment Period Management</strong> - Manages post-enrollment adjustments with multi-stage approval workflow</div>
+                </div>
+            </div>
+            <div class="view-toggle">
+                <button onclick="showSinglePage()" id="btn-single" class="active">Single Page (Compact)</button>
+                <button onclick="showTwoPages()" id="btn-two">Two Pages (Split View)</button>
+            </div>
+            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffc107;">
+                <strong>📄 Documentation Mode:</strong> Use <strong>Single Page</strong> for compact view or <strong>Two Pages</strong> to split entities/processes and data stores. 
+                <strong>🔍 Zoom Controls:</strong> Use zoom buttons or <strong>Ctrl/Cmd + Scroll</strong> to zoom.
+            </div>
+            <!-- Single Page View -->
+            <div class="diagram-page active" id="single-page-view">
+            <div class="diagram-container level0" id="level0-diagram">
+                <div class="zoom-controls">
+                    <button onclick="zoomIn()" title="Zoom In (Ctrl/Cmd + Scroll Up)">+</button>
+                    <button onclick="zoomOut()" title="Zoom Out (Ctrl/Cmd + Scroll Down)">−</button>
+                    <button onclick="resetZoom()" title="Reset to 100%">⟲</button>
+                    <button onclick="fitToScreen()" title="Fit to Screen">⤢</button>
+                    <div class="zoom-info">
+                        <span id="zoom-level">100%</span>
+                    </div>
+                </div>
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level0-mermaid', 'Level0_DFD')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level0-mermaid', 'Level0_DFD')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid level0" id="level0-mermaid">
+graph TB
+    %% External Entities
+    Student[Student]
+    Admin[Admin]
+    Admission[Admission Officer]
+    ProgramHead[Program Head]
+    Dean[Dean]
+    RegistrarStaff[Registrar Staff]
+    
+    %% Processes (Circles)
+    P1(1.0 User Management)
+    P2(2.0 Application Processing)
+    P3(3.0 Curriculum Management)
+    P4(4.0 Enrollment Processing)
+    P5(5.0 Grade Management)
+    P6(6.0 Document Management)
+    P7(7.0 Reporting)
+    P8(8.0 Chatbot Service)
+    P9(9.0 Adjustment Period)
+    
+    %% Data Stores
+    D1(("D1: Users"))
+    D2(("D2: Admins"))
+    D3(("D3: Admissions"))
+    D4(("D4: Program Heads"))
+    D5(("D5: Applicants"))
+    D6(("D6: Enrolled Students"))
+    D7(("D7: Curriculum"))
+    D8(("D8: Curriculum Submissions"))
+    D9(("D9: Sections"))
+    D10(("D10: Section Enrollments"))
+    D11(("D11: Schedules"))
+    D12(("D12: Student Schedules"))
+    D13(("D13: Documents"))
+    D14(("D14: Student Grades"))
+    D15(("D15: Certificate of Registration"))
+    D16(("D16: Enrollment Control"))
+    D17(("D17: Chatbot FAQs"))
+    D18(("D18: Chatbot History"))
+    D19(("D19: Enrollment Reports"))
+    D20(("D20: Adjustment Period Control"))
+    D21(("D21: Adjustment Period Changes"))
+    
+    %% External Entities to Processes
+    Student -->|Registration Data| P1
+    Student -->|Application Data| P2
+    Student -->|Document Uploads| P6
+    Student -->|Enrollment Request| P4
+    Student -->|Adjustment Request| P9
+    Student -->|Query| P8
+    
+    Admin -->|User Management| P1
+    Admin -->|Curriculum Management| P3
+    Admin -->|Enrollment Approval| P4
+    Admin -->|Grade Entry| P5
+    Admin -->|COR Request| P7
+    Admin -->|Adjustment Control| P9
+    
+    Admission -->|Document Verification| P2
+    Admission -->|Student Number| P2
+    Admission -->|Enrollment Control| P2
+    Admission -->|Document Verification| P6
+    
+    ProgramHead -->|Curriculum Submission| P3
+    ProgramHead -->|Irregular Review| P4
+    ProgramHead -->|Adjustment Approval| P9
+    
+    Dean -->|Curriculum Approval| P3
+    Dean -->|Adjustment Approval| P9
+    
+    RegistrarStaff -->|COR Generation| P4
+    RegistrarStaff -->|Adjustment Approval| P9
+    
+    %% Processes to External Entities
+    P1 -->|Account Status| Student
+    P2 -->|Enrollment Status| Student
+    P4 -->|Student Schedule| Student
+    P4 -->|Student COR| Student
+    P5 -->|Student Grades| Student
+    P8 -->|Chatbot Response| Student
+    P9 -->|Adjustment Status| Student
+    
+    P1 -->|User List| Admin
+    P3 -->|Curriculum Data| Admin
+    P4 -->|Section Information| Admin
+    P5 -->|Grade Reports| Admin
+    P7 -->|Enrollment Reports| Admin
+    
+    P2 -->|Applicant List| Admission
+    P6 -->|Document Status| Admission
+    P2 -->|Control Status| Admission
+    
+    P3 -->|Submission Status| ProgramHead
+    P4 -->|Enrollment Status| ProgramHead
+    P9 -->|Adjustment Requests| ProgramHead
+    
+    P3 -->|Curriculum Submissions| Dean
+    P7 -->|Enrollment Reports| Dean
+    P9 -->|Adjustment Requests| Dean
+    
+    P4 -->|Enrollment Data| RegistrarStaff
+    P9 -->|Adjustment Requests| RegistrarStaff
+    
+    %% Process to Data Store Connections
+    P1 <--> D1
+    P1 --> D2
+    P1 --> D3
+    P1 --> D4
+    
+    P2 <--> D5
+    P2 <--> D1
+    P2 --> D16
+    
+    P6 <--> D13
+    P6 --> D1
+    
+    P3 <--> D7
+    P3 <--> D8
+    P3 --> D4
+    P3 --> D2
+    
+    P4 <--> D6
+    P4 <--> D9
+    P4 <--> D10
+    P4 <--> D11
+    P4 <--> D12
+    P4 <--> D15
+    P4 --> D7
+    P4 --> D1
+    P4 --> D14
+    P4 --> D16
+    
+    P5 <--> D14
+    P5 --> D1
+    P5 --> D12
+    
+    P7 --> D6
+    P7 --> D9
+    P7 --> D10
+    P7 --> D1
+    P7 <--> D19
+    P7 <--> D15
+    
+    P8 --> D17
+    P8 <--> D18
+    
+    P9 <--> D20
+    P9 <--> D21
+    P9 --> D6
+    P9 --> D9
+    P9 --> D10
+    P9 --> D11
+    P9 --> D12
+    P9 --> D1
+    P9 --> D7
+    
+    %% Styling - Clean and minimal
+    style P1 fill:white,stroke:#333,stroke-width:2px
+    style P2 fill:white,stroke:#333,stroke-width:2px
+    style P3 fill:white,stroke:#333,stroke-width:2px
+    style P4 fill:white,stroke:#333,stroke-width:2px
+    style P5 fill:white,stroke:#333,stroke-width:2px
+    style P6 fill:white,stroke:#333,stroke-width:2px
+    style P7 fill:white,stroke:#333,stroke-width:2px
+    style P8 fill:white,stroke:#333,stroke-width:2px
+    style P9 fill:white,stroke:#333,stroke-width:2px
+    
+    style Student fill:white,stroke:#333,stroke-width:2px
+    style Admin fill:white,stroke:#333,stroke-width:2px
+    style Admission fill:white,stroke:#333,stroke-width:2px
+    style ProgramHead fill:white,stroke:#333,stroke-width:2px
+    style Dean fill:white,stroke:#333,stroke-width:2px
+    style RegistrarStaff fill:white,stroke:#333,stroke-width:2px
+                </div>
+            </div>
+            </div>
+            
+            <!-- Two Page Split View -->
+            <div class="diagram-page" id="two-page-view">
+                <!-- Page 1: External Entities and Processes -->
+                <div class="page-break">
+                    <h3 style="margin-top: 0;">Level 0 DFD - Page 1: External Entities & Processes</h3>
+                    <div class="diagram-container level0">
+                        <div class="download-controls">
+                            <button onclick="downloadDiagram('level0-page1', 'Level0_DFD_Page1')" title="Download as PNG">📥 PNG</button>
+                            <button onclick="downloadDiagramSVG('level0-page1', 'Level0_DFD_Page1')" class="secondary" title="Download as SVG">📄 SVG</button>
+                        </div>
+                        <div class="mermaid level0" id="level0-page1">
+graph TB
+    %% External Entities Section
+    subgraph EXT[" "]
+        direction LR
+        Student[Student]
+        Admin[Admin/Registrar]
+        Admission[Admission Officer]
+        ProgramHead[Program Head]
+        Dean[Dean]
+        RegistrarStaff[Registrar Staff]
+    end
+    
+    %% Core System Processes
+    subgraph PROC[" "]
+        direction TB
+        P1[1.0 User Management<br/>Registration & Authentication]
+        P2[2.0 Application Processing<br/>Application & Verification]
+        P6[6.0 Document Management<br/>Upload & Verification]
+        P3[3.0 Curriculum Management<br/>Submission & Approval]
+        P4[4.0 Enrollment Processing<br/>Enrollment & COR Generation]
+        P5[5.0 Grade Management<br/>Grade Entry & Viewing]
+        P7[7.0 Reporting<br/>Reports & Analytics]
+        P8[8.0 Chatbot Service<br/>Query & FAQ]
+        P9[9.0 Adjustment Period<br/>Adjustment & Approval]
+    end
+    
+    %% External Entities to Processes
+    Student -->|Registration Data, Login| P1
+    Student -->|Application Data| P2
+    Student -->|Document Uploads| P6
+    Student -->|Enrollment Request| P4
+    Student -->|Adjustment Request| P9
+    Student -->|Query| P8
+    
+    Admin -->|User Management Commands| P1
+    Admin -->|Curriculum Management| P3
+    Admin -->|Section Management, Schedule Management, Enrollment Approval| P4
+    Admin -->|Grade Entry| P5
+    Admin -->|COR Generation Request| P7
+    Admin -->|Adjustment Period Control| P9
+    
+    Admission -->|Document Verification, Student Number Assignment| P2
+    Admission -->|Enrollment Control| P2
+    Admission -->|Document Verification| P6
+    
+    ProgramHead -->|Curriculum Submission| P3
+    ProgramHead -->|Irregular Student Review| P4
+    ProgramHead -->|Adjustment Approval| P9
+    
+    Dean -->|Curriculum Approval| P3
+    Dean -->|Adjustment Approval| P9
+    
+    RegistrarStaff -->|Enrollment Assistance, COR Generation| P4
+    RegistrarStaff -->|Adjustment Approval| P9
+    
+    %% Processes to External Entities
+    P1 -->|Account Status| Student
+    P2 -->|Enrollment Status| Student
+    P4 -->|Student Schedule, Student COR| Student
+    P5 -->|Student Grades| Student
+    P8 -->|Chatbot Response| Student
+    P9 -->|Adjustment Status| Student
+    
+    P1 -->|User List| Admin
+    P3 -->|Curriculum Data| Admin
+    P4 -->|Section Information| Admin
+    P5 -->|Grade Reports| Admin
+    P7 -->|Enrollment Reports| Admin
+    
+    P2 -->|Applicant List| Admission
+    P6 -->|Document Status| Admission
+    P2 -->|Enrollment Control Status| Admission
+    
+    P3 -->|Curriculum Submission Status| ProgramHead
+    P4 -->|Enrollment Status| ProgramHead
+    P1 -->|Program Data| ProgramHead
+    P9 -->|Adjustment Requests| ProgramHead
+    
+    P3 -->|Curriculum Submissions| Dean
+    P7 -->|Enrollment Reports| Dean
+    P9 -->|Adjustment Requests| Dean
+    
+    P4 -->|Enrollment Data| RegistrarStaff
+    P9 -->|Adjustment Requests| RegistrarStaff
+    
+    %% Styling
+    style P1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style P3 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style P4 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style P5 fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style P6 fill:#e0f2f1,stroke:#00796b,stroke-width:2px
+    style P7 fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style P8 fill:#e1bee7,stroke:#8e24aa,stroke-width:2px
+    style P9 fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
+    
+    style Student fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Admin fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style Admission fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    style ProgramHead fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style Dean fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    style RegistrarStaff fill:#e0f2f1,stroke:#004d40,stroke-width:2px
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Page 2: Processes and Data Stores -->
+                <div class="page-break">
+                    <h3>Level 0 DFD - Page 2: Processes & Data Stores</h3>
+                    <div class="diagram-container level0">
+                        <div class="download-controls">
+                            <button onclick="downloadDiagram('level0-page2', 'Level0_DFD_Page2')" title="Download as PNG">📥 PNG</button>
+                            <button onclick="downloadDiagramSVG('level0-page2', 'Level0_DFD_Page2')" class="secondary" title="Download as SVG">📄 SVG</button>
+                        </div>
+                        <div class="mermaid level0" id="level0-page2">
+graph TB
+    %% Core System Processes
+    subgraph PROC[" "]
+        direction TB
+        P1[1.0 User Management<br/>Registration & Authentication]
+        P2[2.0 Application Processing<br/>Application & Verification]
+        P6[6.0 Document Management<br/>Upload & Verification]
+        P3[3.0 Curriculum Management<br/>Submission & Approval]
+        P4[4.0 Enrollment Processing<br/>Enrollment & COR Generation]
+        P5[5.0 Grade Management<br/>Grade Entry & Viewing]
+        P7[7.0 Reporting<br/>Reports & Analytics]
+        P8[8.0 Chatbot Service<br/>Query & FAQ]
+        P9[9.0 Adjustment Period<br/>Adjustment & Approval]
+    end
+    
+    %% Data Stores Section
+    subgraph DATA[" "]
+        direction TB
+        D1[("D1: Users")]
+        D2[("D2: Admins")]
+        D3[("D3: Admissions")]
+        D4[("D4: Program Heads")]
+        D5[("D5: Applicants")]
+        D6[("D6: Enrolled Students")]
+        D13[("D13: Documents")]
+        D16[("D16: Enrollment Control")]
+        D7[("D7: Curriculum")]
+        D8[("D8: Curriculum Submissions")]
+        D9[("D9: Sections")]
+        D10[("D10: Section Enrollments")]
+        D11[("D11: Schedules")]
+        D12[("D12: Student Schedules")]
+        D14[("D14: Student Grades")]
+        D15[("D15: Certificate of Registration")]
+        D17[("D17: Chatbot FAQs")]
+        D18[("D18: Chatbot History")]
+        D19[("D19: Enrollment Reports")]
+        D20[("D20: Adjustment Period Control")]
+        D21[("D21: Adjustment Period Changes")]
+    end
+    
+    %% Process to Data Store Connections
+    P1 <--> D1
+    P1 --> D2
+    P1 --> D3
+    P1 --> D4
+    
+    P2 <--> D5
+    P2 <--> D1
+    P2 --> D16
+    
+    P6 <--> D13
+    P6 --> D1
+    
+    P3 <--> D7
+    P3 <--> D8
+    P3 --> D4
+    P3 --> D2
+    
+    P4 <--> D6
+    P4 <--> D9
+    P4 <--> D10
+    P4 <--> D11
+    P4 <--> D12
+    P4 <--> D15
+    P4 --> D7
+    P4 --> D1
+    P4 --> D14
+    P4 --> D16
+    
+    P5 <--> D14
+    P5 --> D1
+    P5 --> D12
+    
+    P7 --> D6
+    P7 --> D9
+    P7 --> D10
+    P7 --> D1
+    P7 <--> D19
+    P7 <--> D15
+    
+    P8 --> D17
+    P8 <--> D18
+    
+    P9 <--> D20
+    P9 <--> D21
+    P9 --> D6
+    P9 --> D9
+    P9 --> D10
+    P9 --> D11
+    P9 --> D12
+    P9 --> D1
+    P9 --> D7
+    
+    %% Styling
+    style P1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style P3 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style P4 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style P5 fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style P6 fill:#e0f2f1,stroke:#00796b,stroke-width:2px
+    style P7 fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style P8 fill:#e1bee7,stroke:#8e24aa,stroke-width:2px
+    style P9 fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Level 1 DFDs -->
+        <div class="section" id="level1">
+            <h2>Level 1 DFDs</h2>
+            <div class="description">
+                <p><strong>Overview:</strong> Level 1 DFDs provide detailed breakdowns of each major process from the Level 0 DFD, showing sub-processes and their interactions with data stores and external entities.</p>
+            </div>
+            
+            <!-- 1.0 User Management -->
+            <h3>1.0 User Management (Level 1)</h3>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-user-management', 'Level1_User_Management')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-user-management', 'Level1_User_Management')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-user-management">
+graph TB
+    Student[Student]
+    Admin[Admin]
+    AllUsers[All User Types]
+    
+    P11[1.1<br/>Register User]
+    P12[1.2<br/>Authenticate User]
+    P13[1.3<br/>Approve User Account]
+    P14[1.4<br/>Update User Status]
+    
+    D1[("D1: Users")]
+    D2[("D2: Admins")]
+    D3[("D3: Admissions")]
+    D4[("D4: Program Heads")]
+    
+    Student -->|Student Registration Data| P11
+    AllUsers -->|Login Credentials| P12
+    Admin -->|User Management Commands| P13
+    Admin -->|User Management Commands| P14
+    
+    P11 -->|Account Status| Student
+    P12 -->|Authentication Result| AllUsers
+    P13 -->|User List| Admin
+    P14 -->|User List| Admin
+    
+    P11 -->|Write| D1
+    P12 -->|Read| D1
+    P12 -->|Read| D2
+    P12 -->|Read| D3
+    P12 -->|Read| D4
+    P13 -->|Read/Write| D1
+    P14 -->|Read/Write| D1
+    
+    style P11 fill:#e3f2fd,stroke:#1976d2
+    style P12 fill:#e3f2fd,stroke:#1976d2
+    style P13 fill:#e3f2fd,stroke:#1976d2
+    style P14 fill:#e3f2fd,stroke:#1976d2
+                </div>
+            </div>
+            
+            <!-- 2.0 Application Processing -->
+            <h3>2.0 Application Processing (Level 1)</h3>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-application-processing', 'Level1_Application_Processing')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-application-processing', 'Level1_Application_Processing')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-application-processing">
+graph TB
+    Student[Student]
+    Admission[Admission Officer]
+    
+    P21[2.1<br/>Submit Application]
+    P22[2.2<br/>Verify Documents]
+    P23[2.3<br/>Assign Student Number]
+    P24[2.4<br/>Pass to Registrar]
+    
+    D1[("D1: Users")]
+    D5[("D5: Applicants")]
+    D13[("D13: Documents")]
+    D16[("D16: Enrollment Control")]
+    
+    Student -->|Application Data| P21
+    Admission -->|Document Verification| P22
+    Admission -->|Student Number Assignment| P23
+    Admission -->|Applicant Processing| P24
+    
+    P21 -->|Enrollment Status| Student
+    P22 -->|Document Status| Admission
+    P24 -->|Applicant List| Admission
+    P24 -->|Enrollment Control Status| Admission
+    
+    P21 -->|Write| D5
+    P21 -->|Read/Write| D1
+    P22 -->|Read/Write| D13
+    P23 -->|Read/Write| D1
+    P23 -->|Read/Write| D5
+    P24 -->|Read/Write| D5
+    P24 -->|Read| D16
+    P24 -->|Read/Write| D1
+    
+    style P21 fill:#e8f5e9,stroke:#388e3c
+    style P22 fill:#e8f5e9,stroke:#388e3c
+    style P23 fill:#e8f5e9,stroke:#388e3c
+    style P24 fill:#e8f5e9,stroke:#388e3c
+                </div>
+            </div>
+            
+            <!-- 3.0 Curriculum Management -->
+            <h3>3.0 Curriculum Management (Level 1)</h3>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-curriculum-management', 'Level1_Curriculum_Management')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-curriculum-management', 'Level1_Curriculum_Management')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-curriculum-management">
+graph TB
+    ProgramHead[Program Head]
+    Admin[Admin]
+    Dean[Dean]
+    
+    P31[3.1<br/>Submit Curriculum]
+    P32[3.2<br/>Review Curriculum]
+    P33[3.3<br/>Approve Curriculum]
+    P34[3.4<br/>Sync Approved Curriculum]
+    
+    D4[("D4: Program Heads")]
+    D7[("D7: Curriculum")]
+    D8[("D8: Curriculum Submissions")]
+    D2[("D2: Admins")]
+    
+    ProgramHead -->|Curriculum Submission| P31
+    Admin -->|Curriculum Management| P32
+    Dean -->|Curriculum Approval| P33
+    
+    P31 -->|Curriculum Submission Status| ProgramHead
+    P32 -->|Curriculum Data| Admin
+    P33 -->|Curriculum Submissions| Dean
+    
+    P31 -->|Write| D8
+    P31 -->|Read| D4
+    P32 -->|Read/Write| D8
+    P32 -->|Read| D2
+    P33 -->|Read/Write| D8
+    P34 -->|Read| D8
+    P34 -->|Write| D7
+    
+    P32 -.->|Trigger| P34
+    P33 -.->|Trigger| P34
+    
+    style P31 fill:#fff3e0,stroke:#f57c00
+    style P32 fill:#fff3e0,stroke:#f57c00
+    style P33 fill:#fff3e0,stroke:#f57c00
+    style P34 fill:#fff3e0,stroke:#f57c00
+                </div>
+            </div>
+            
+            <!-- 4.0 Enrollment Processing -->
+            <h3>4.0 Enrollment Processing (Level 1)</h3>
+            <div class="description">
+                <p><strong>Enhanced Workflow:</strong> The system automatically classifies students as regular or irregular based on grades.</p>
+                <ul>
+                    <li><strong>Regular Students:</strong> Student → Registrar (generates COR) → Admin → Confirmed</li>
+                    <li><strong>Irregular Students:</strong> Student → Program Head → Registrar (generates COR) → Admin → Confirmed</li>
+                </ul>
+                <p><strong>Status Flow:</strong> draft → pending_program_head (irregular) / pending_registrar (regular) → pending_admin → confirmed</p>
+                <p><strong>COR Generation:</strong> Registrar generates COR after reviewing enrollment, before forwarding to Admin for final approval</p>
+            </div>
+            <div class="diagram-container" style="padding: 10px;">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-enrollment-processing', 'Level1_Enrollment_Processing')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-enrollment-processing', 'Level1_Enrollment_Processing')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid compact" id="level1-enrollment-processing" style="min-height: 300px;">
+graph TB
+    Student[Student]
+    Admin[Admin]
+    ProgramHead[Program Head]
+    RegistrarStaff[Registrar Staff]
+    
+    P41(4.1 Submit Enrollment)
+    P42(4.2 Review & Generate COR)
+    P43(4.3 Assign Section)
+    P44(4.4 Create Schedule)
+    P45(4.5 Final Approval)
+    
+    D1(("D1: Users"))
+    D6(("D6: Enrolled Students"))
+    D7(("D7: Curriculum"))
+    D9(("D9: Sections"))
+    D10(("D10: Section Enrollments"))
+    D11(("D11: Schedules"))
+    D12(("D12: Student Schedules"))
+    D14(("D14: Grades"))
+    D15(("D15: COR"))
+    D16(("D16: Enrollment Control"))
+    
+    Student -->|Enrollment Request| P41
+    ProgramHead -->|Review| P42
+    RegistrarStaff -->|Review & COR| P42
+    Admin -->|Final Approval| P45
+    Admin -->|Section Mgmt| P43
+    Admin -->|Schedule Mgmt| P44
+    
+    P41 -->|Status| Student
+    P42 -->|Status| ProgramHead
+    P42 -->|Status| RegistrarStaff
+    P42 -->|COR| Student
+    P43 -->|Section Info| Admin
+    P44 -->|Section Info| Admin
+    P45 -->|Status| Student
+    
+    P41 -->|W| D6
+    P41 -->|R| D1
+    P41 -->|R| D7
+    P41 -->|R| D14
+    P41 -->|R| D16
+    P42 -->|R/W| D6
+    P42 -->|R| D14
+    P42 -->|R/W| D15
+    P42 -->|R| D10
+    P42 -->|R| D12
+    P43 -->|R/W| D9
+    P43 -->|R/W| D10
+    P43 -->|R/W| D6
+    P44 -->|R/W| D11
+    P44 -->|R| D7
+    P44 -->|R| D9
+    P45 -->|R/W| D6
+    
+    P41 -.->|Regular| P42
+    P41 -.->|Irregular| P42
+    P42 -.->|To Admin| P45
+    P43 -.->|Creates| P44
+    
+    style P41 fill:white,stroke:#333,stroke-width:2px
+    style P42 fill:white,stroke:#333,stroke-width:2px
+    style P43 fill:white,stroke:#333,stroke-width:2px
+    style P44 fill:white,stroke:#333,stroke-width:2px
+    style P45 fill:white,stroke:#333,stroke-width:2px
+                </div>
+            </div>
+            
+            <!-- 5.0 Grade Management -->
+            <h3>5.0 Grade Management (Level 1)</h3>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-grade-management', 'Level1_Grade_Management')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-grade-management', 'Level1_Grade_Management')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-grade-management">
+graph TB
+    Student[Student]
+    Admin[Admin]
+    
+    P51[5.1<br/>Enter Grades]
+    P52[5.2<br/>Verify Grades]
+    P53[5.3<br/>View Grades]
+    
+    D1[("D1: Users")]
+    D12[("D12: Student Schedules")]
+    D14[("D14: Student Grades")]
+    
+    Admin -->|Grade Entry| P51
+    Admin -->|Grade Entry| P52
+    Student -->|View Request| P53
+    Admin -->|View Request| P53
+    
+    P51 -->|Grade Reports| Admin
+    P52 -->|Grade Reports| Admin
+    P53 -->|Student Grades| Student
+    P53 -->|Grade Reports| Admin
+    
+    P51 -->|Write| D14
+    P51 -->|Read| D12
+    P52 -->|Read/Write| D14
+    P53 -->|Read| D14
+    P53 -->|Read| D1
+    P53 -->|Read| D12
+    
+    style P51 fill:#fce4ec,stroke:#c2185b
+    style P52 fill:#fce4ec,stroke:#c2185b
+    style P53 fill:#fce4ec,stroke:#c2185b
+                </div>
+            </div>
+            
+            <!-- 6.0 Document Management -->
+            <h3>6.0 Document Management (Level 1)</h3>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-document-management', 'Level1_Document_Management')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-document-management', 'Level1_Document_Management')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-document-management">
+graph TB
+    Student[Student]
+    Admission[Admission Officer]
+    
+    P61[6.1<br/>Upload Document]
+    P62[6.2<br/>Verify Document]
+    P63[6.3<br/>Update Document Status]
+    
+    D1[("D1: Users")]
+    D13[("D13: Documents")]
+    
+    Student -->|Document Uploads| P61
+    Admission -->|Document Verification| P62
+    
+    P61 -->|Upload Confirmation| Student
+    P62 -->|Document Status| Admission
+    P63 -->|Document Status| Admission
+    
+    P61 -->|Write| D13
+    P61 -->|Read| D1
+    P62 -->|Read| D13
+    P62 -.->|Trigger| P63
+    P63 -->|Read/Write| D13
+    
+    style P61 fill:#e0f2f1,stroke:#00796b
+    style P62 fill:#e0f2f1,stroke:#00796b
+    style P63 fill:#e0f2f1,stroke:#00796b
+                </div>
+            </div>
+            
+            <!-- 7.0 Reporting -->
+            <h3>7.0 Reporting (Level 1)</h3>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-reporting', 'Level1_Reporting')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-reporting', 'Level1_Reporting')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-reporting">
+graph TB
+    Student[Student]
+    Admin[Admin]
+    Dean[Dean]
+    
+    P71[7.1<br/>Generate Enrollment Reports]
+    P72[7.2<br/>View Reports]
+    P73[7.3<br/>Generate COR]
+    
+    D1[("D1: Users")]
+    D6[("D6: Enrolled Students")]
+    D9[("D9: Sections")]
+    D10[("D10: Section Enrollments")]
+    D12[("D12: Student Schedules")]
+    D15[("D15: Certificate of Registration")]
+    D19[("D19: Enrollment Reports")]
+    
+    Admin -->|Report Request| P71
+    Admin -->|COR Generation Request| P73
+    Admin -->|View Request| P72
+    Dean -->|View Request| P72
+    
+    P71 -->|Enrollment Reports| Admin
+    P71 -->|Enrollment Reports| Dean
+    P72 -->|Enrollment Reports| Admin
+    P72 -->|Enrollment Reports| Dean
+    P73 -->|Student COR| Student
+    
+    P71 -->|Read| D6
+    P71 -->|Read| D9
+    P71 -->|Read| D10
+    P71 -->|Read| D1
+    P71 -->|Write| D19
+    P72 -->|Read| D19
+    P73 -->|Read| D6
+    P73 -->|Read| D10
+    P73 -->|Read| D12
+    P73 -->|Write| D15
+    
+    style P71 fill:#fff9c4,stroke:#f9a825
+    style P72 fill:#fff9c4,stroke:#f9a825
+    style P73 fill:#fff9c4,stroke:#f9a825
+                </div>
+            </div>
+            
+            <!-- 8.0 Chatbot Service -->
+            <h3>8.0 Chatbot Service (Level 1)</h3>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-chatbot-service', 'Level1_Chatbot_Service')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-chatbot-service', 'Level1_Chatbot_Service')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-chatbot-service">
+graph TB
+    Student[Student]
+    
+    P81[8.1<br/>Process Query]
+    P82[8.2<br/>Retrieve FAQ]
+    P83[8.3<br/>Log Interaction]
+    
+    D17[("D17: Chatbot FAQs")]
+    D18[("D18: Chatbot History")]
+    
+    Student -->|Query| P81
+    
+    P81 -->|Chatbot Response| Student
+    
+    P81 -.->|Trigger| P82
+    P82 -->|Read| D17
+    P82 -.->|Trigger| P83
+    P83 -->|Write| D18
+    
+    style P81 fill:#e1bee7,stroke:#8e24aa
+    style P82 fill:#e1bee7,stroke:#8e24aa
+    style P83 fill:#e1bee7,stroke:#8e24aa
+                </div>
+            </div>
+            
+            <!-- 9.0 Adjustment Period Management -->
+            <h3>9.0 Adjustment Period Management (Level 1)</h3>
+            <div class="description">
+                <p><strong>Workflow:</strong> Students with confirmed enrollment can request adjustments to their schedules during the adjustment period.</p>
+                <ul>
+                    <li><strong>Workflow:</strong> Student → Program Head → Dean → Registrar Staff → Approved</li>
+                    <li><strong>Status Flow:</strong> pending_program_head → pending_dean → pending_registrar → approved</li>
+                    <li><strong>Admin Control:</strong> Admin/Registrar controls when adjustment period is open/closed</li>
+                </ul>
+            </div>
+            <div class="diagram-container">
+                <div class="download-controls">
+                    <button onclick="downloadDiagram('level1-adjustment-period', 'Level1_Adjustment_Period')" title="Download as PNG">📥 PNG</button>
+                    <button onclick="downloadDiagramSVG('level1-adjustment-period', 'Level1_Adjustment_Period')" class="secondary" title="Download as SVG">📄 SVG</button>
+                </div>
+                <div class="mermaid" id="level1-adjustment-period">
+graph TB
+    Student[Student]
+    Admin[Admin]
+    ProgramHead[Program Head]
+    Dean[Dean]
+    RegistrarStaff[Registrar Staff]
+    
+    P91[9.1<br/>Submit Adjustment Request]
+    P92[9.2<br/>Program Head Review]
+    P93[9.3<br/>Dean Review]
+    P94[9.4<br/>Registrar Staff Approval<br/>& Apply Changes]
+    P95[9.5<br/>Manage Adjustment Period Control]
+    
+    D1[("D1: Users")]
+    D6[("D6: Enrolled Students")]
+    D7[("D7: Curriculum")]
+    D9[("D9: Sections")]
+    D10[("D10: Section Enrollments")]
+    D11[("D11: Schedules")]
+    D12[("D12: Student Schedules")]
+    D20[("D20: Adjustment Period Control")]
+    D21[("D21: Adjustment Period Changes")]
+    
+    Student -->|Adjustment Request| P91
+    ProgramHead -->|Adjustment Approval| P92
+    Dean -->|Adjustment Approval| P93
+    RegistrarStaff -->|Adjustment Approval| P94
+    Admin -->|Adjustment Period Control| P95
+    
+    P91 -->|Adjustment Status| Student
+    P92 -->|Adjustment Requests| ProgramHead
+    P93 -->|Adjustment Requests| Dean
+    P94 -->|Adjustment Requests| RegistrarStaff
+    P94 -->|Adjustment Status| Student
+    
+    P91 -->|Write| D21
+    P91 -->|Read| D1
+    P91 -->|Read| D6
+    P91 -->|Read| D7
+    P91 -->|Read| D9
+    P91 -->|Read| D10
+    P91 -->|Read| D11
+    P91 -->|Read| D12
+    P91 -->|Read| D20
+    P92 -->|Read/Write| D21
+    P92 -->|Read| D1
+    P92 -->|Read| D7
+    P93 -->|Read/Write| D21
+    P94 -->|Read/Write| D21
+    P94 -->|Read/Write| D6
+    P94 -->|Read/Write| D9
+    P94 -->|Read/Write| D10
+    P94 -->|Read/Write| D11
+    P94 -->|Read/Write| D12
+    P95 -->|Read/Write| D20
+    
+    P91 -.->|Routes to Program Head| P92
+    P92 -.->|Routes to Dean| P93
+    P93 -.->|Routes to Registrar Staff| P94
+    
+    style P91 fill:#f1f8e9,stroke:#558b2f
+    style P92 fill:#f1f8e9,stroke:#558b2f
+    style P93 fill:#f1f8e9,stroke:#558b2f
+    style P94 fill:#f1f8e9,stroke:#558b2f
+    style P95 fill:#f1f8e9,stroke:#558b2f
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentZoom = 1.0;
+        const minZoom = 0.5;
+        const maxZoom = 3.0;
+        const zoomStep = 0.1;
+        
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 5,
+                nodeSpacing: 25,
+                rankSpacing: 35,
+                diagramPadding: 5
+            }
+        });
+        
+        // Wait for mermaid to render, then adjust Level 0 diagram
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const level0Mermaid = document.getElementById('level0-mermaid');
+                if (level0Mermaid) {
+                    const svg = level0Mermaid.querySelector('svg');
+                    if (svg) {
+                        // Set compact size for documentation
+                        if (svg.width.baseVal.value < 700) {
+                            svg.setAttribute('width', '700');
+                        }
+                        if (svg.height.baseVal.value < 500) {
+                            svg.setAttribute('height', '500');
+                        }
+                        // Make text smaller for compact view
+                        const textElements = svg.querySelectorAll('text');
+                        textElements.forEach(text => {
+                            const fontSize = parseFloat(text.getAttribute('font-size') || '14');
+                            if (fontSize > 12) {
+                                text.setAttribute('font-size', Math.max(10, fontSize * 0.75));
+                            }
+                        });
+                    }
+                }
+            }, 1000);
+        });
+        
+        function zoomIn() {
+            if (currentZoom < maxZoom) {
+                currentZoom += zoomStep;
+                applyZoom();
+            }
+        }
+        
+        function zoomOut() {
+            if (currentZoom > minZoom) {
+                currentZoom -= zoomStep;
+                applyZoom();
+            }
+        }
+        
+        function resetZoom() {
+            currentZoom = 1.0;
+            applyZoom();
+        }
+        
+        function fitToScreen() {
+            const container = document.getElementById('level0-diagram');
+            const mermaidDiv = document.getElementById('level0-mermaid');
+            if (container && mermaidDiv) {
+                const containerWidth = container.clientWidth - 80;
+                const containerHeight = container.clientHeight - 80;
+                const svg = mermaidDiv.querySelector('svg');
+                if (svg) {
+                    const svgWidth = svg.width.baseVal.value;
+                    const svgHeight = svg.height.baseVal.value;
+                    const scaleX = containerWidth / svgWidth;
+                    const scaleY = containerHeight / svgHeight;
+                    currentZoom = Math.min(scaleX, scaleY, 1.0);
+                    applyZoom();
+                }
+            }
+        }
+        
+        function applyZoom() {
+            const mermaidDiv = document.getElementById('level0-mermaid');
+            if (mermaidDiv) {
+                mermaidDiv.style.transform = `scale(${currentZoom})`;
+                mermaidDiv.style.transformOrigin = 'top left';
+                document.getElementById('zoom-level').textContent = Math.round(currentZoom * 100) + '%';
+            }
+        }
+        
+        // Enable mouse wheel zoom
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('level0-diagram');
+            if (container) {
+                container.addEventListener('wheel', function(e) {
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        if (e.deltaY < 0) {
+                            zoomIn();
+                        } else {
+                            zoomOut();
+                        }
+                    }
+                }, { passive: false });
+            }
+            
+            // Wait for Mermaid to finish rendering, then add download buttons
+            setTimeout(() => {
+                addDownloadButtons();
+            }, 2000); // Wait 2 seconds for all diagrams to render
+        });
+        
+        // Add download buttons to all diagram containers
+        function addDownloadButtons() {
+            const diagramContainers = document.querySelectorAll('.diagram-container');
+            console.log('Adding download buttons to', diagramContainers.length, 'diagram containers');
+            
+            diagramContainers.forEach((container, index) => {
+                const mermaidDiv = container.querySelector('.mermaid');
+                if (mermaidDiv) {
+                    // Generate ID if not present
+                    if (!mermaidDiv.id) {
+                        const section = container.closest('.section');
+                        if (section) {
+                            const sectionId = section.id || `diagram-${index}`;
+                            const title = section.querySelector('h2, h3')?.textContent || `Diagram_${index + 1}`;
+                            const fileName = title.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').substring(0, 50);
+                            mermaidDiv.id = fileName.toLowerCase() + '-diagram';
+                            console.log('Assigned ID to diagram:', mermaidDiv.id);
+                        }
+                    }
+                    
+                    // Add download buttons if not already present
+                    if (!container.querySelector('.download-controls')) {
+                        const fileName = mermaidDiv.id.replace('-diagram', '').replace(/-/g, '_');
+                        const downloadControls = document.createElement('div');
+                        downloadControls.className = 'download-controls';
+                        downloadControls.innerHTML = `
+                            <button onclick="downloadDiagram('${mermaidDiv.id}', '${fileName}')" title="Download as PNG">📥 PNG</button>
+                            <button onclick="downloadDiagramSVG('${mermaidDiv.id}', '${fileName}')" class="secondary" title="Download as SVG">📄 SVG</button>
+                        `;
+                        container.insertBefore(downloadControls, mermaidDiv);
+                        console.log('Added download buttons to:', mermaidDiv.id);
+                    }
+                }
+            });
+        }
+        
+        // Download diagram as PNG
+        function downloadDiagram(elementId, fileName) {
+            console.log('Downloading diagram:', elementId, fileName);
+            try {
+                const element = document.getElementById(elementId);
+                if (!element) {
+                    console.error('Element not found:', elementId);
+                    alert('Diagram element not found. Please refresh the page and try again.');
+                    return;
+                }
+                
+                const svg = element.querySelector('svg');
+                if (!svg) {
+                    console.error('SVG not found in element:', elementId);
+                    alert('Diagram not yet loaded. Please wait a moment and try again.');
+                    return;
+                }
+                
+                console.log('SVG found, dimensions:', svg.width.baseVal.value, 'x', svg.height.baseVal.value);
+                
+                // Reset zoom before capture
+                const originalTransform = element.style.transform;
+                element.style.transform = '';
+                
+                // Wait a moment for transform to apply
+                setTimeout(() => {
+                    // Clone SVG to avoid modifying original
+                    const clonedSvg = svg.cloneNode(true);
+                    
+                    // Get SVG dimensions
+                    const bbox = svg.getBBox();
+                    const width = Math.max(bbox.width + 100, svg.width.baseVal.value || 1200);
+                    const height = Math.max(bbox.height + 100, svg.height.baseVal.value || 800);
+                    
+                    // Set explicit dimensions
+                    clonedSvg.setAttribute('width', width);
+                    clonedSvg.setAttribute('height', height);
+                    clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                    
+                    // Add background rectangle
+                    const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    bgRect.setAttribute('width', width);
+                    bgRect.setAttribute('height', height);
+                    bgRect.setAttribute('fill', 'white');
+                    clonedSvg.insertBefore(bgRect, clonedSvg.firstChild);
+                    
+                    // Convert SVG to data URL with proper encoding
+                    const svgData = new XMLSerializer().serializeToString(clonedSvg);
+                    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const svgDataUrl = e.target.result;
+                        const img = new Image();
+                        
+                        img.onload = function() {
+                            // Create canvas with proper dimensions
+                            const canvas = document.createElement('canvas');
+                            const scale = 2; // Higher resolution
+                            canvas.width = width * scale;
+                            canvas.height = height * scale;
+                            
+                            const ctx = canvas.getContext('2d');
+                            
+                            // Fill white background
+                            ctx.fillStyle = 'white';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            
+                            // Scale context for better quality
+                            ctx.scale(scale, scale);
+                            
+                            // Draw SVG
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            // Convert to PNG and download
+                            canvas.toBlob(function(blob) {
+                                if (blob) {
+                    const link = document.createElement('a');
+                    link.download = fileName + '.png';
+                    link.href = URL.createObjectURL(blob);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    setTimeout(() => {
+                        URL.revokeObjectURL(link.href);
+                    }, 100);
+                    
+                    // Restore zoom
+                    element.style.transform = originalTransform;
+                    console.log('Download completed successfully');
+                } else {
+                    console.error('Failed to create blob');
+                    alert('Failed to create image. Please try downloading as SVG instead.');
+                    element.style.transform = originalTransform;
+                }
+            }, 'image/png', 0.95);
+        };
+        
+        img.onerror = function(error) {
+            console.error('Image load error:', error);
+            alert('Error loading diagram image. Please try downloading as SVG instead.');
+            element.style.transform = originalTransform;
+        };
+        
+        console.log('Setting image source from SVG data URL');
+        img.src = svgDataUrl;
+    };
+    
+    reader.onerror = function(error) {
+        console.error('FileReader error:', error);
+        alert('Error reading diagram. Please try again.');
+        element.style.transform = originalTransform;
+    };
+    
+    console.log('Reading SVG blob as data URL');
+    reader.readAsDataURL(svgBlob);
+}, 100);
+
+} catch (error) {
+    console.error('Download error:', error);
+    alert('An error occurred while downloading. Please try downloading as SVG instead. Error: ' + error.message);
+}
+        }
+        
+        // Download diagram as SVG
+        function downloadDiagramSVG(elementId, fileName) {
+            try {
+                const element = document.getElementById(elementId);
+                if (!element) {
+                    console.error('Element not found:', elementId);
+                    alert('Diagram element not found. Please refresh the page and try again.');
+                    return;
+                }
+                
+                const svg = element.querySelector('svg');
+                if (!svg) {
+                    alert('Diagram not yet loaded. Please wait a moment and try again.');
+                    return;
+                }
+                
+                // Clone SVG
+                const clonedSvg = svg.cloneNode(true);
+                
+                // Get SVG dimensions
+                const bbox = svg.getBBox();
+                const width = Math.max(bbox.width + 100, svg.width.baseVal.value || 1200);
+                const height = Math.max(bbox.height + 100, svg.height.baseVal.value || 800);
+                
+                // Set explicit dimensions and namespace
+                clonedSvg.setAttribute('width', width);
+                clonedSvg.setAttribute('height', height);
+                if (!clonedSvg.getAttribute('xmlns')) {
+                    clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                }
+                
+                // Add background rectangle
+                const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                bgRect.setAttribute('width', width);
+                bgRect.setAttribute('height', height);
+                bgRect.setAttribute('fill', 'white');
+                clonedSvg.insertBefore(bgRect, clonedSvg.firstChild);
+                
+                // Serialize to string
+                const svgData = new XMLSerializer().serializeToString(clonedSvg);
+                
+                // Add XML declaration
+                const xmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>\n';
+                const fullSvgData = xmlDeclaration + svgData;
+                
+                // Create blob and download
+                const svgBlob = new Blob([fullSvgData], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(svgBlob);
+                
+                const link = document.createElement('a');
+                link.download = fileName + '.svg';
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up after a delay
+                setTimeout(() => {
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+            } catch (error) {
+                console.error('SVG download error:', error);
+                alert('An error occurred while downloading SVG. Error: ' + error.message);
+            }
+        }
+        
+        // Download all diagrams
+        async function downloadAllDiagrams() {
+            if (!confirm('This will download all diagrams as PNG files. Continue?')) {
+                return;
+            }
+            
+            const diagrams = [
+                { id: 'context-diagram', name: 'Context_Diagram' },
+                { id: 'level0-mermaid', name: 'Level0_DFD' },
+                { id: 'level1-user-management', name: 'Level1_User_Management' },
+                { id: 'level1-application-processing', name: 'Level1_Application_Processing' },
+                { id: 'level1-curriculum-management', name: 'Level1_Curriculum_Management' },
+                { id: 'level1-enrollment-processing', name: 'Level1_Enrollment_Processing' },
+                { id: 'level1-grade-management', name: 'Level1_Grade_Management' },
+                { id: 'level1-document-management', name: 'Level1_Document_Management' },
+                { id: 'level1-reporting', name: 'Level1_Reporting' },
+                { id: 'level1-chatbot-service', name: 'Level1_Chatbot_Service' },
+                { id: 'level1-adjustment-period', name: 'Level1_Adjustment_Period' }
+            ];
+            
+            console.log('Downloading', diagrams.length, 'diagrams:', diagrams);
+            
+            // Download each diagram with delay
+            for (let i = 0; i < diagrams.length; i++) {
+                const diagram = diagrams[i];
+                await new Promise(resolve => setTimeout(resolve, 1500 * i)); // 1.5 second delay between downloads
+                console.log(`Downloading diagram ${i + 1}/${diagrams.length}:`, diagram.name);
+                downloadDiagram(diagram.id, diagram.name);
+            }
+            
+            alert(`Downloading ${diagrams.length} diagrams. Please allow downloads in your browser. Check your downloads folder.`);
+        }
+        
+        // Make all functions globally accessible
+        window.downloadDiagram = downloadDiagram;
+        window.downloadDiagramSVG = downloadDiagramSVG;
+        window.downloadAllDiagrams = downloadAllDiagrams;
+        
+        console.log('Download functions initialized and ready');
+        
+        // View toggle functions
+        function showSinglePage() {
+            document.getElementById('single-page-view').classList.add('active');
+            document.getElementById('two-page-view').classList.remove('active');
+            document.getElementById('btn-single').classList.add('active');
+            document.getElementById('btn-two').classList.remove('active');
+        }
+        
+        function showTwoPages() {
+            document.getElementById('single-page-view').classList.remove('active');
+            document.getElementById('two-page-view').classList.add('active');
+            document.getElementById('btn-single').classList.remove('active');
+            document.getElementById('btn-two').classList.add('active');
+        }
+        
+        // Make functions globally accessible
+        window.showSinglePage = showSinglePage;
+        window.showTwoPages = showTwoPages;
+    </script>
+</body>
+</html>
+
+
+
+
