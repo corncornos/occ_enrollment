@@ -1,0 +1,82 @@
+program_code,course_code,course_name,units,year_level,semester,is_required,pre_requisites
+BTVTED,GE-100,Understanding the Self,3,1st Year,First Semester,1,
+BTVTED,GE-101,Reading in Philippine History,3,1st Year,First Semester,1,
+BTVTED,GE-102,Art Appreciation,3,1st Year,First Semester,1,
+BTVTED,GE-103,Purposive Communication,3,1st Year,First Semester,1,
+BTVTED,GE-104,Mathematics in the Modern World,3,1st Year,First Semester,1,
+BTVTED,PE1,Physical Fitness/Self-Testing Activities,2,1st Year,First Semester,1,
+BTVTED,NSTP1,National Service Training Program 1,3,1st Year,First Semester,1,
+BTVTED,GE-107,The Contemporary World,3,1st Year,Second Semester,1,
+BTVTED,GE-111,Ethics,3,1st Year,Second Semester,1,
+BTVTED,EDUC-100,The Teaching Profession,3,1st Year,Second Semester,1,
+BTVTED,EDUC-101,The Child and Adolescent Learner and Learning Principles,3,1st Year,Second Semester,1,
+BTVTED,PE2,Rhythmic Activities,2,1st Year,Second Semester,1,
+BTVTED,NSTP2,National Service Training Program 2,3,1st Year,Second Semester,1,
+BTVTED,EDUC-102,Facilitating Learner-Centered Teaching: The Learner-Centered Approach with Emphasis on Trainers Methodology 1,3,2nd Year,First Semester,1,
+BTVTED,EDUC-103,Technology for Teaching and Learning 1,3,2nd Year,First Semester,1,
+BTVTED,EDUC-104,Building and Enhancing Literacy Across the Curriculum with Emphasis on the 21st Century Skills,3,2nd Year,First Semester,1,
+BTVTED,EDUC-105,Andragogy of Learning including Principles of Trainers Methodology,3,2nd Year,First Semester,1,
+BTVTED,EDUC-106,Assessment in Learning 1,3,2nd Year,First Semester,1,
+BTVTED,BTVD-T101,Introduction to Agri-Fishery and Arts,3,2nd Year,First Semester,1,
+BTVTED,BTVD100,Computer System Servicing 1 - Computer Hardware Installation and Maintenance,3,2nd Year,First Semester,1,
+BTVTED,PE3,Individual/Dual Combative Sports,2,2nd Year,First Semester,1,
+BTVTED,EDUC-109,Curriculum Development and Evaluation with Emphasis on Trainers Methodology II,3,2nd Year,Second Semester,1,EDUC-102
+BTVTED,EDUC-110,Foundation of Special and Inclusive Education (Mandated),3,2nd Year,Second Semester,1,
+BTVTED,EDUC-111,Assessment in Learning 2 with focus on Trainers Methodology 1 & 2,3,2nd Year,Second Semester,1,EDUC-106
+BTVTED,BTVE-101,Computer System Servicing 2 - Computer System Installation and Configuration,3,2nd Year,Second Semester,1,BTVD100
+BTVTED,PE4,Team Sports,2,2nd Year,Second Semester,1,
+BTVTED,EDUC 112,Technology Research 1: Methods of Research,3,3rd Year,First Semester,1,
+BTVTED,TLE 1-5,Teaching Common Competencies in ICT,3,3rd Year,First Semester,1,
+BTVTED,BTVE 102,Visual Graphics Design 1 - Web Site Development and Digital Media Design - Print Media,3,3rd Year,First Semester,1,
+BTVTED,BTVE 103,Visual Graphics Design 2 - Web Site Development and Digital Media Design - Video Production,3,3rd Year,First Semester,1,
+BTVTED,BTVE 104,Visual Graphics Design 3 - Web Site Development and Digital Media Design - Audio Production,3,3rd Year,First Semester,1,
+BTVTED,BTVE-107,Computer Systems Servicing 3 - Computer System Servicing - Network Installation and Maintenance,3,3rd Year,First Semester,1,BTVE-101
+BTVTED,BTVE-106,Programming 1 - Program Logic Formulation,3,3rd Year,First Semester,1,
+BTVTED,BTVD-E113,Technology Research 2 - Undergraduate Thesis Writing/Research paper,3,3rd Year,Second Semester,1,EDUC 112
+BTVTED,BTVE 108,Visual Graphics Design 5 - Website Development and Digital Media Design - Web Site Creation (HTML5),3,3rd Year,Second Semester,1,BTVE 102
+BTVTED,BTVE 111,Programming 2 - Developing Web Applications (ASP.net),3,3rd Year,Second Semester,1,BTVE-106
+BTVTED,EDUC-200,Field Study 1 - Observations of Teaching-Learning in Actual School Environment,3,4th Year,First Semester,1,
+BTVTED,EDUC-201,Field Study 2 - Participation and Teaching Assistantship,3,4th Year,First Semester,1,
+BTVTED,EDUC-202,Teaching Internship,6,4th Year,Second Semester,1,EDUC-201
+BSIS,GE-100,Understanding the Self,3,1st Year,First Semester,1,
+BSIS,GE-101,Reading in Philippine History,3,1st Year,First Semester,1,
+BSIS,GE-102,Art Appreciation,3,1st Year,First Semester,1,
+BSIS,GE-103,Purposive Communication,3,1st Year,First Semester,1,
+BSIS,GE-104,Mathematics in the Modern World,3,1st Year,First Semester,1,
+BSIS,GE-105,Science Technology and Society,3,1st Year,First Semester,1,
+BSIS,PE1,Physical Fitness/Self-Testing Activities,2,1st Year,First Semester,1,
+BSIS,NSTP1,National Service Training Program 1,3,1st Year,First Semester,1,
+BSIS,GE-107,The Contemporary World,3,1st Year,Second Semester,1,
+BSIS,GE-111,Ethics,3,1st Year,Second Semester,1,
+BSIS,IS-101,Introduction to Information Systems,3,1st Year,Second Semester,1,
+BSIS,IS-102,Computer Programming 1,3,1st Year,Second Semester,1,
+BSIS,PE2,Rhythmic Activities,2,1st Year,Second Semester,1,
+BSIS,NSTP2,National Service Training Program 2,3,1st Year,Second Semester,1,
+BSIS,IS-201,Data Structures and Algorithms,3,2nd Year,First Semester,1,IS-102
+BSIS,IS-202,Database Management Systems,3,2nd Year,First Semester,1,
+BSIS,IS-203,Systems Analysis and Design,3,2nd Year,First Semester,1,
+BSIS,IS-204,Web Development 1,3,2nd Year,First Semester,1,IS-102
+BSIS,IS-205,Computer Programming 2,3,2nd Year,First Semester,1,IS-102
+BSIS,PE3,Individual/Dual Combative Sports,2,2nd Year,First Semester,1,
+BSIS,IS-206,Object-Oriented Programming,3,2nd Year,Second Semester,1,IS-205
+BSIS,IS-207,Web Development 2,3,2nd Year,Second Semester,1,IS-204
+BSIS,IS-208,Information Systems Security,3,2nd Year,Second Semester,1,
+BSIS,IS-209,Network Fundamentals,3,2nd Year,Second Semester,1,
+BSIS,IS-210,Human-Computer Interaction,3,2nd Year,Second Semester,1,
+BSIS,PE4,Team Sports,2,2nd Year,Second Semester,1,
+BSIS,IS-301,Enterprise Resource Planning,3,3rd Year,First Semester,1,IS-202
+BSIS,IS-302,Software Engineering,3,3rd Year,First Semester,1,IS-203
+BSIS,IS-303,Project Management,3,3rd Year,First Semester,1,
+BSIS,IS-304,Mobile Application Development,3,3rd Year,First Semester,1,IS-207
+BSIS,IS-305,Data Analytics,3,3rd Year,First Semester,1,IS-202
+BSIS,IS-306,Information Systems Audit,3,3rd Year,Second Semester,1,IS-208
+BSIS,IS-307,Cloud Computing,3,3rd Year,Second Semester,1,IS-209
+BSIS,IS-308,IT Governance,3,3rd Year,Second Semester,1,
+BSIS,IS-309,Research Methods in Information Systems,3,3rd Year,Second Semester,1,
+BSIS,IS-310,Capstone Project 1,3,3rd Year,Second Semester,1,IS-302
+BSIS,IS-401,IT Service Management,3,4th Year,First Semester,1,
+BSIS,IS-402,Information Systems Strategy,3,4th Year,First Semester,1,
+BSIS,IS-403,Capstone Project 2,3,4th Year,First Semester,1,IS-310
+BSIS,IS-404,Internship,6,4th Year,Second Semester,1,
+BSIS,IS-405,Thesis Writing,3,4th Year,Second Semester,1,IS-309
+
